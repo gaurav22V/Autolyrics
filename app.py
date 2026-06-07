@@ -5,7 +5,7 @@ import time
 from transformers import WhisperProcessor, WhisperForConditionalGeneration
 from peft import PeftModel
 
-# LOCAL CONFIG 
+# LOCAL CONFIG
 MODEL_ID = "openai/whisper-small"
 OUTPUT_DIR = "./models/autolyrics_lora"  
 SAMPLING_RATE = 16000
@@ -24,12 +24,11 @@ try:
     print("AutoLyrics Engine Ready")
 except Exception as e:
     print(f"ERROR: Could not load LoRA adapter.\nError: {e}")
-    # Fallback to base model so the app doesn't crash completely
-    model = base_model.to(device)
+    model = base_model.to(device)   # Fallback to base model
 
 def transcribe_audio(audio_filepath):
     if audio_filepath is None:
-        return "ERROR: Please upload or record an audio file first.", "0.00 seconds"
+        return "ERRORr: Please upload or record an audio file first.", "0.00 seconds"
 
     print("Processing incoming audio stream...")
     start_time = time.time()
@@ -52,7 +51,7 @@ def transcribe_audio(audio_filepath):
         # Decode output
         transcription = processor.batch_decode(predicted_ids, skip_special_tokens=True)[0].strip().lower()
         
-        # Clean up punctuations 
+        # Clean up punctuations
         clean_text = "".join(char for char in transcription if char.isalnum() or char.isspace())
 
         end_time = time.time()

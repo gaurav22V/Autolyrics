@@ -1,0 +1,66 @@
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment variables
+.env
+.env.local
+
+# Dataset folders
+data/
+processed_dataset/
+
+# Training checkpoints
+models/autolyrics_lora/checkpoint-100/
+models/autolyrics_lora/checkpoint-200/
+models/autolyrics_lora/checkpoint-300/
+models/autolyrics_lora/checkpoint-400/
+
+# Ignore all checkpoints (future-proof)
+models/autolyrics_lora/checkpoint-*/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+*.log
+
+# Hugging Face / training artifacts
+runs/
+outputs/
+wandb/
+
+# Model files (uncomment if you don't want to track trained models)
+# *.bin
+# *.pt
+# *.pth
+# *.ckpt
+# *.safetensors
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+
+# Temporary files
+tmp/
+temp/
+*.tmp

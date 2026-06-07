@@ -1,4 +1,4 @@
-# app.py
+ app.py
 import gradio as gr
 import torch
 import librosa
@@ -111,4 +111,4 @@ if __name__ == "__main__":
         inbrowser=True,
         theme=gr.themes.Soft(primary_hue="indigo"), 
         css=custom_css
-    )
+)

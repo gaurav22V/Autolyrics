@@ -41,7 +41,9 @@ AutoLyrics/
 ```
 
 ## Quick Start
+```bash
 git clone [https://huggingface.co/spaces/gaurav22V/AutoLyrics](https://huggingface.co/spaces/gaurav22V/AutoLyrics)
 cd AutoLyrics
 pip install -r requirements.txt
 python app.py
+```

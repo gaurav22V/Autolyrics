@@ -1,9 +1,9 @@
+pydantic==2.10.6
 torch
 transformers
 peft
 bitsandbytes
 librosa
 torchaudio
-pydantic==2.10.6
 gradio==5.7.1
 huggingface_hub

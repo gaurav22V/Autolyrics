@@ -1,7 +1,7 @@
 ---
-title: AutoLyrics AI
+title: AutoLyrics 
 emoji: 🎵
-colorFrom: gray
+colorFrom: indigo
 colorTo: red
 sdk: gradio
 sdk_version: "5.7.1"

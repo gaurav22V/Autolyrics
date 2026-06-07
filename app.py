@@ -1,34 +1,37 @@
- app.py
 import gradio as gr
 import torch
 import librosa
 import time
 from transformers import WhisperProcessor, WhisperForConditionalGeneration
 from peft import PeftModel
-from config import *
 
+# LOCAL CONFIG 
+MODEL_ID = "openai/whisper-small"
+OUTPUT_DIR = "./models/autolyrics_lora"  
+SAMPLING_RATE = 16000
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Initializing AutoLyrics Application on {device.upper()}...")
 
+# Load standard processor
 processor = WhisperProcessor.from_pretrained(MODEL_ID)
 base_model = WhisperForConditionalGeneration.from_pretrained(MODEL_ID)
 
-print(f" Attaching Fine-Tuned LoRA Weights from {OUTPUT_DIR}...")
+print(f"Attaching Fine-Tuned LoRA Weights from {OUTPUT_DIR}...")
 try:
     model = PeftModel.from_pretrained(base_model, OUTPUT_DIR)
     model.to(device)
     print("AutoLyrics Engine Ready")
 except Exception as e:
-    print(f" ERROR: Could not load LoRA adapter.\nError: {e}")
+    print(f"ERROR: Could not load LoRA adapter.\nError: {e}")
     # Fallback to base model so the app doesn't crash completely
     model = base_model.to(device)
 
 def transcribe_audio(audio_filepath):
     if audio_filepath is None:
-        return " Error: Please upload or record an audio file first.", "0.00 seconds"
+        return "ERROR: Please upload or record an audio file first.", "0.00 seconds"
 
-    print(" Processing incoming audio stream")
+    print("Processing incoming audio stream...")
     start_time = time.time()
 
     try:
@@ -49,19 +52,19 @@ def transcribe_audio(audio_filepath):
         # Decode output
         transcription = processor.batch_decode(predicted_ids, skip_special_tokens=True)[0].strip().lower()
         
-        # Clean up punctuation 
+        # Clean up punctuations 
         clean_text = "".join(char for char in transcription if char.isalnum() or char.isspace())
 
         end_time = time.time()
         latency = round(end_time - start_time, 2)
 
-        print(f" Transcribed in {latency}s")
+        print(f"Transcribed in {latency}s")
         return clean_text, f"{latency} seconds"
 
     except Exception as e:
-        return f" Audio Processing Error: {str(e)}", "N/A"
+        return f"Audio Processing Error: {str(e)}", "N/A"
 
-
+# Styling Customizations
 custom_css = """
 .gradio-container {font-family: 'Inter', system-ui, sans-serif;}
 .header-text {text-align: center; color: #2D3748; margin-bottom: 0.2rem;}
@@ -69,7 +72,7 @@ custom_css = """
 .footer {text-align: center; margin-top: 2rem; color: #A0AEC0; font-size: 0.9rem;}
 """
 
-with gr.Blocks() as demo:
+with gr.Blocks(css=custom_css) as demo:
     
     # App Header
     gr.Markdown("<h1 class='header-text'> AutoLyrics </h1>")
@@ -105,10 +108,8 @@ with gr.Blocks() as demo:
 
 # Starting server
 if __name__ == "__main__":
-    print("Starting local web server...")
+    print("Starting web server...")
     demo.launch(
         share=False, 
-        inbrowser=True,
-        theme=gr.themes.Soft(primary_hue="indigo"), 
-        css=custom_css
-)
+        theme=gr.themes.Soft(primary_hue="indigo")
+    )

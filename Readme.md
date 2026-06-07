@@ -22,22 +22,27 @@ A fine-tuned Automatic Speech Recognition (ASR) system designed to transcribe mu
 ## Project Structure
 ```text
 AutoLyrics/       
- |- requirements.txt        # Python dependencies
- |- packages.txt            # System-level requirements (ffmpeg)
- |- app.py                  # Main Gradio web application 
+ |- requirements.txt            # Python dependencies
+ |- packages.txt                # System-level requirements (ffmpeg)
+ |- app.py                      # Main Gradio web application 
  |- data/
-    |- NUS_48e/             # Raw dataset audio files (.wav)
-    |- transcripts.json     # True lyrics annotations and alignments
+    |- NUS_48e/                 # Raw dataset audio files (.wav)
+    |- transcripts.json         # Auto-generated transcript annotations
  |- processed_dataset/      
-    |- test/                # Tokenized and feature-extracted evaluation split
-    |- train/               # Tokenized and feature-extracted training split
+    |- test/                    # Feature-extracted evaluation split
+    |- train/                   # Feature-extracted evaluation split
  |- models/
-    |- autolyrics_lora/     # Saved LoRA adapter weights (adapter_model.bin, config)
+    |- autolyrics_lora/         # Fine-tuned LoRA adapter weights
  |- src/
-    |- preprocessing/       # Scripts for audio resampling, trimming, and chunking
-    |- training/            # Fine-tuning loop execution and quantization configuration
-    |- inference/           # Logic for streaming audio processing and model generation
-    |- evaluation/          # Word Error Rate (WER) calculation and benchmarking
+    |- preprocessing/       
+        |- auto_label.py        # Baseline Whisper transcription of raw audio
+        |- build_dataset.py     # Dataset creation, feature extraction, and tokenization
+    |- training/            
+        |- train.py             # LoRA fine-tuning and quantized training setup
+    |- inference/           
+        |- predict.py           # Baseline vs LoRA inference and latency benchmarking
+    |- evaluation/          
+        |- metrics.py           # WER calculation and model comparison
 ```
 
 ## Quick Start
